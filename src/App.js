@@ -4,14 +4,17 @@ import Sum from './sum';
 // import './App.css';
 
 class App extends Component{
+  state={
+    names:['yaakov','shaun','moshe']
+  }
 
   render(){
+    const names=this.state.names.map((name=>{ return <Sum name={name}/>}))
     return(
       <div>
-        welocome to my test. im going to try and make a tester
-        <Sum/>
-        <Sum/>
-        <Sum/>
+        welcome to my test.
+        {names}
+      
       </div>
     )
   }
