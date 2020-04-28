@@ -36,3 +36,13 @@
     transform: rotate(360deg);
   }
 }
+.TestBox{
+  display: inline-flex;
+  border: 1px solid blue;
+  box-shadow: 0px 5px 5px rgb(59, 59, 230) ;
+  margin: 5px 5px;
+}
+.Text{
+  color: rgb(28, 138, 28);
+  padding: 0px 10px;
+}
