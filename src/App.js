@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Sum from './sum';
+import Sum from './box';
 import Winner from './winner'
 
 // import './App.css';
@@ -24,8 +24,10 @@ class App extends Component {
       ],
       turn: 'X',
       count: 0,
-      winner: null
+      winner: null,
+      disable: null,
     })
+    console.log(this.state)
   }
 
   checkforWinner = (updateDatedRows) => {
@@ -34,13 +36,7 @@ class App extends Component {
     // finding a match diagonally
     const flattenedRowArray = updateDatedRows.reduce((totalArray, currentRow) => totalArray.concat(currentRow))
     console.log(flattenedRowArray)
-    if (((flattenedRowArray[0] && flattenedRowArray[4] && flattenedRowArray[8]) === symbol)
-      || ((flattenedRowArray[2] && flattenedRowArray[4] && flattenedRowArray[6]) === symbol)) {
-      this.setState({ winner: symbol })
-      setTimeout(() => {
-        this.resfreshState()
-      }, 5000);
-    }
+
     // finding a match going down
     const firstVertical = updateDatedRows.filter(row => row[0] === symbol)
     const secondVertical = updateDatedRows.filter(row => row[1] === symbol)
@@ -49,20 +45,36 @@ class App extends Component {
     const isWinnerSecond = secondVertical.length > 2
     const isWinnerThird = thirdVertical.length > 2
 
-    if (isWinnerFirst || isWinnerSecond || isWinnerThird) {
-      this.setState({ winner: symbol })
-      setTimeout(() => {
-        this.resfreshState()
-      }, 5000);
-    }
-
-    // finding a match across
     const isWinnerArray = updateDatedRows.map(row => {
       return row.join() === [symbol, symbol, symbol].join()
     })
-    if (
+    if (isWinnerFirst || isWinnerSecond || isWinnerThird) {
+      this.setState({
+        winner: symbol,
+        disable: true
+      })
+      console.log('fault1')
+      setTimeout(() => {
+        this.resfreshState()
+      }, 5000);
+    } else if (
       isWinnerArray.includes(true)) {
-      this.setState({ winner: symbol })
+      this.setState({
+        winner: symbol,
+        disable: true
+      })
+      console.log('fault2')
+      setTimeout(() => {
+        this.resfreshState()
+        
+      }, 5000);
+    } else if ((flattenedRowArray[0]=== symbol && flattenedRowArray[4]=== symbol && flattenedRowArray[8] === symbol)
+      || (flattenedRowArray[2]=== symbol && flattenedRowArray[4]=== symbol && flattenedRowArray[6] === symbol)) {
+      this.setState({
+        winner: symbol,
+        disable: true
+      })
+      console.log('fault3')
       setTimeout(() => {
         this.resfreshState()
       }, 5000);
@@ -107,7 +119,7 @@ class App extends Component {
   }
 
   checkBoxHandler = (index, box) => {
-    if (!box) {
+    if (!box&&!this.state.disable) {
       const updatedFirstRow = [...this.state.boxes[0]]
       updatedFirstRow.splice(index, 1, this.state.turn)
       const updatedBoxes = [updatedFirstRow, this.state.boxes[1], this.state.boxes[2]]
@@ -124,7 +136,7 @@ class App extends Component {
 
   }
   checkBoxHandler1 = (index, box) => {
-    if (!box) {
+    if (!box&&!this.state.disable) {
       const updatedSecondRow = [...this.state.boxes[1]]
       updatedSecondRow.splice(index, 1, this.state.turn)
       const updatedBoxes = [this.state.boxes[0], updatedSecondRow, this.state.boxes[2]]
@@ -141,7 +153,7 @@ class App extends Component {
   }
 
   checkBoxHandler2 = (index, box) => {
-    if (!box) {
+    if (!box&&!this.state.disable) {
       const updatedThirdRow = [...this.state.boxes[2]]
       updatedThirdRow.splice(index, 1, this.state.turn)
       const updatedBoxes = [this.state.boxes[0], this.state.boxes[1], updatedThirdRow]
@@ -163,9 +175,9 @@ class App extends Component {
     if (this.state.winner) {
       winner = <Winner name={this.state.winner} />
     }
-    const firstRow = this.state.boxes[0].map((box, index) => { return <Sum clicked={() => this.checkBoxHandler(index, box)} key={index} type={box} /> })
-    const secondRow = this.state.boxes[1].map((box, index) => { return <Sum clicked={() => this.checkBoxHandler1(index, box)} key={index} type={box} /> })
-    const thirdRow = this.state.boxes[2].map((box, index) => { return <Sum clicked={() => this.checkBoxHandler2(index, box)} key={index} type={box} /> })
+    const firstRow = this.state.boxes[0].map((box, index) => { return <Sum symbol={box} clicked={() => this.checkBoxHandler(index, box)} key={index} type={box} /> })
+    const secondRow = this.state.boxes[1].map((box, index) => { return <Sum symbol={box} clicked={() => this.checkBoxHandler1(index, box)} key={index} type={box} /> })
+    const thirdRow = this.state.boxes[2].map((box, index) => { return <Sum symbol={box} clicked={() => this.checkBoxHandler2(index, box)} key={index} type={box} /> })
     return (
       <div>
         <h1>welcome to my naughts and crosses game!</h1>
