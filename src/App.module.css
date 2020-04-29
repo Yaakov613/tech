@@ -38,25 +38,34 @@
 }
 .TestBox{
   display: inline-flex;
-  border: 1px solid blue;
+  border: 1px solid rgb(70, 5, 61);
   box-shadow: 0px 5px 5px rgb(59, 59, 230) ;
   /* margin: 5px 5px; */
   height: 50px;
-  width: 30px;
+  width: 50px;
+
 }
-.Text{
+.Text0{
+  color: rgb(216, 31, 31);
+  padding: 0px 17px;
+  /* text-align: center; */
+ 
+}
+.TextX{
   color: rgb(28, 138, 28);
-  padding: 0px 10px;
+  padding: 0px 17px;
+  /* text-align: center; */
 }
-.TestBoxX{
+
+/* .TestBoxX{
   display: inline-flex;
   border: 1px solid rgb(53, 211, 5);
   box-shadow: 0px 5px 5px rgb(20, 194, 4) ;
   /* margin: 5px 5px; */
-}
-.TestBox0{
+/* } */ 
+/* .TestBox0{
   display: inline-flex;
   border: 1px solid rgb(228, 16, 16);
   box-shadow: 0px 5px 5px rgb(230, 17, 17) ;
   /* margin: 5px 5px; */
-}
+/* } */ 
