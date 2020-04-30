@@ -1,0 +1,6 @@
+1) add a play again button //done
+2) keep track of the number of wins
+3) add names to the game
+4) send scores to the database
+5) login user and fetch scores
+6) route to a top score page

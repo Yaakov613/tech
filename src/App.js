@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import Sum from './box';
 import Winner from './winner'
-
+import { Route, Redirect } from 'react-router-dom'
+import Login from './loginPage'
 // import './App.css';
 
 class App extends Component {
@@ -15,9 +16,21 @@ class App extends Component {
     count: 0,
     winner: null,
     disable: null,
-    draw: false
+    draw: false,
+    players: {
+      firstPlayer: {
+        value: ''
+      },
+      secondPlayer: {
+        value: ''
+      }
+    },
+    loggedIn: false,
+    valid: false,
+    playAgain: false
   }
-  resfreshState = () => {
+  refreshState = () => {
+    console.log(this.props)
     this.setState({
       boxes: [
         [null, null, null],
@@ -28,7 +41,10 @@ class App extends Component {
       count: 0,
       winner: null,
       disable: null,
-      draw: false
+      draw: false,
+      loggedIn: true,
+      valid: true,
+      playAgain: true
     })
     console.log(this.state)
   }
@@ -59,36 +75,23 @@ class App extends Component {
         winner: symbol,
         disable: true
       })
-      console.log('fault1')
-      setTimeout(() => {
-        this.resfreshState()
-      }, 5000);
     } else if (
       isWinnerArray.includes(true)) {
+
       this.setState({
         winner: symbol,
         disable: true
       })
-      console.log('fault2')
-      setTimeout(() => {
-        this.resfreshState()
-
-      }, 5000);
     } else if ((flattenedRowArray[0] === symbol && flattenedRowArray[4] === symbol && flattenedRowArray[8] === symbol)
       || (flattenedRowArray[2] === symbol && flattenedRowArray[4] === symbol && flattenedRowArray[6] === symbol)) {
+      // this.props.history.push('/won')
       this.setState({
         winner: symbol,
         disable: true
       })
-      console.log('fault3')
-      setTimeout(() => {
-        this.resfreshState()
-      }, 5000);
+
     } else if (isDraw) {
       this.setState({ draw: true })
-      setTimeout(() => {
-        this.resfreshState()
-      }, 5000);
     }
   }
   // switch([symbol, symbol, symbol].join()){
@@ -108,7 +111,7 @@ class App extends Component {
   //   (updateDatedRows[0][2] !== null && updateDatedRows[0][2] === updateDatedRows[1][1] && updateDatedRows[2][0])) {
   //   setTimeout(() => {
   //     alert('we have a winner')
-  //     this.resfreshState()
+  //     this.refreshState()
   //   }, 500);
   // }
   //  else if ((updateDatedRows[0][0] !== null && updateDatedRows[0][0] === updateDatedRows[1][0] && updateDatedRows[2][0]) ||
@@ -116,7 +119,7 @@ class App extends Component {
   //   (updateDatedRows[0][2] !== null && updateDatedRows[0][2] === updateDatedRows[1][2] && updateDatedRows[2][2])) {
   //   setTimeout(() => {
   //     alert('we have a winner')
-  //     this.resfreshState()
+  //     this.refreshState()
   //   }, 500);
   // }
   // else if ((updateDatedRows[0][0] !== null && updateDatedRows[0][0] === updateDatedRows[0][1] && updateDatedRows[0][2]) ||
@@ -124,7 +127,7 @@ class App extends Component {
   //   (updateDatedRows[2][0] !== null && updateDatedRows[2][0] === updateDatedRows[2][1] && updateDatedRows[2][2])) {
   //   setTimeout(() => {
   //     alert('we have a winner!!')
-  //     this.resfreshState()
+  //     this.refreshState()
   //   }, 1000);
   // }
   // else{}
@@ -142,7 +145,8 @@ class App extends Component {
       this.setState({
         boxes: updatedBoxes,
         turn: turn,
-        count: newCount
+        count: newCount,
+        playAgain: false
       })
     }
 
@@ -159,7 +163,8 @@ class App extends Component {
       this.setState({
         boxes: updatedBoxes,
         turn,
-        count: newCount
+        count: newCount,
+        playAgain: false
       })
     }
   }
@@ -176,29 +181,79 @@ class App extends Component {
       this.setState({
         boxes: updatedBoxes,
         turn,
-        count: newCount
+        count: newCount,
+        playAgain: false
       })
     }
+  }
+  inputChangedHandler = (event, player) => {
+    const updatedPlayers = {
+      ...this.state.players,
+      [player]: {
+        value: event.target.value
+      }
+    }
+    let valid = null
+    if (updatedPlayers.firstPlayer.value.length && updatedPlayers.secondPlayer.value.length) {
+      valid = true
+    }
+    this.setState({
+      players: updatedPlayers,
+      valid: valid
+    })
+  }
+  onSubmitHandler = () => {
+    this.setState({ loggedIn: true })
   }
 
 
   render() {
     let winner = null
-    if (this.state.winner||this.state.draw) {
-      winner = <Winner draw={this.state.draw} winner={this.state.winner} name={this.state.winner} />
+    if (this.state.winner || this.state.draw) {
+      winner = <Winner
+        clicked={this.refreshState}
+        draw={this.state.draw}
+        winner={this.state.winner}
+        name={this.state.winner} />
     }
     const firstRow = this.state.boxes[0].map((box, index) => { return <Sum symbol={box} clicked={() => this.checkBoxHandler(index, box)} key={index} type={box} /> })
     const secondRow = this.state.boxes[1].map((box, index) => { return <Sum symbol={box} clicked={() => this.checkBoxHandler1(index, box)} key={index} type={box} /> })
     const thirdRow = this.state.boxes[2].map((box, index) => { return <Sum symbol={box} clicked={() => this.checkBoxHandler2(index, box)} key={index} type={box} /> })
-    return (
-      <div>
-        <h1 style={{textAlign:'center',marginTop:'100px'}}>welcome to my naughts and crosses game!</h1>
+
+    let loggedIn = null
+    if (this.state.loggedIn) { loggedIn = <Redirect to='/game' /> }
+    let loginIn = null
+    if (this.state.loggedIn) { loginIn = <Redirect to='/' /> }
+    let isWinner = null
+    if (this.state.winner||this.state.draw) { isWinner = <Redirect to='/won' /> }
+    return (<div>
+      <Route path='/game' exact render={() => <div>
+        <h1 style={{ textAlign: 'center', marginTop: '100px' }}>welcome to my naughts and crosses game!</h1>
         <h3 style={{ textAlign: 'center' }}>{this.state.turn} to play</h3>
         <div style={{ textAlign: 'center' }}>{firstRow}</div>
         <div style={{ textAlign: 'center' }}>{secondRow}</div>
         <div style={{ textAlign: 'center' }}>{thirdRow}</div>
-        {winner}
       </div>
+
+      } />
+      {/* {this.state.winner || this.state.draw ? <Redirect to='/won' /> : null} */}
+
+      <Route path='/won' render={() => {
+        return winner
+      }} />
+      <Route path='/' exact render={() => {
+        return <Login
+          disable={!this.state.valid}
+          submited={this.onSubmitHandler}
+          value1={this.state.players.firstPlayer.value}
+          value2={this.state.players.secondPlayer.value}
+          inputChanged={(event, player) => this.inputChangedHandler(event, player)}
+        />
+      }} />
+      {isWinner}
+      {loginIn}
+      {loggedIn}
+    </div>
     )
   }
 }
