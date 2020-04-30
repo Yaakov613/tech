@@ -36,28 +36,7 @@
     transform: rotate(360deg);
   }
 }
-.TestBox{
-  display: inline-flex;
-  border: 1px solid rgb(70, 5, 61);
-  box-shadow: 0px 5px 5px rgb(59, 59, 230) ;
-  /* margin: 5px 5px; */
-  height: 50px;
-  width: 50px;
-}
-.TestBox:hover{
-  cursor: pointer;
-}
-.Text0{
-  color: rgb(216, 31, 31);
-  padding: 0px 17px;
-  /* text-align: center; */
- 
-}
-.TextX{
-  color: rgb(28, 138, 28);
-  padding: 0px 17px;
-  /* text-align: center; */
-}
+
 
 /* .TestBoxX{
   display: inline-flex;
@@ -71,3 +50,9 @@
   box-shadow: 0px 5px 5px rgb(230, 17, 17) ;
   /* margin: 5px 5px; */
 /* } */ 
+/* @media(min-width:500px){
+  .TestBox{
+    height: 100px;
+  width: 20%;
+  }
+} */

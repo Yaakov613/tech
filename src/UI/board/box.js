@@ -1,5 +1,5 @@
 import React from 'react'
-import classes from '../src/App.module.css'
+import classes from './box.module.css'
 
 const sum = (props) => {
     let style=null
