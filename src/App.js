@@ -45,12 +45,15 @@ class App extends Component {
       draw: false,
       loggedIn: true,
       valid: true,
-      playAgain: true
+      playAgain: true,
+      currentPlayer:this.state.players.firstPlayer.value
     })
     console.log(this.state)
   }
 
   checkforWinner = (updateDatedRows) => {
+
+   
 
     const symbol = this.state.turn
     // finding a match diagonally
@@ -225,13 +228,18 @@ class App extends Component {
 
 
   render() {
+    let currentPlayer = this.state.players.firstPlayer.value
+      if (this.state.currentPlayer === this.state.players.firstPlayer.value) {
+        currentPlayer = this.state.players.secondPlayer.value
+      }
+    
     let winner = null
     if (this.state.winner || this.state.draw) {
       winner = <Winner
         clicked={this.refreshState}
         draw={this.state.draw}
         winner={this.state.winner}
-        name={this.state.currentPlayer} />
+        name={currentPlayer} />
     }
     const firstRow = this.state.boxes[0].map((box, index) => { return <Sum symbol={box} clicked={() => this.checkBoxHandler(index, box)} key={index} type={box} /> })
     const secondRow = this.state.boxes[1].map((box, index) => { return <Sum symbol={box} clicked={() => this.checkBoxHandler1(index, box)} key={index} type={box} /> })
