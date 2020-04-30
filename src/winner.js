@@ -35,7 +35,7 @@ const winner = (props) => {
     return (
         <div className={decoration}>
             <h1 className={classes.Text}>
-                {props.winner ? `well Done!! You ${props.name} have won the game!` : `you have drawn the game`}
+                {props.winner ? `well Done!! ${props.name} has won the game!` : `you have drawn the game`}
             </h1>
             <Link to='/game'><button on className={classes.ResetButton} onClick={props.clicked}>play again</button></Link>
         </div>

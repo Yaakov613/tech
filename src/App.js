@@ -27,7 +27,8 @@ class App extends Component {
     },
     loggedIn: false,
     valid: false,
-    playAgain: false
+    playAgain: false,
+    currentPlayer: null
   }
   refreshState = () => {
     console.log(this.props)
@@ -138,6 +139,10 @@ class App extends Component {
       const updatedFirstRow = [...this.state.boxes[0]]
       updatedFirstRow.splice(index, 1, this.state.turn)
       const updatedBoxes = [updatedFirstRow, this.state.boxes[1], this.state.boxes[2]]
+      let currentPlayer = this.state.players.firstPlayer.value
+      if (this.state.currentPlayer === this.state.players.firstPlayer.value) {
+        currentPlayer = this.state.players.secondPlayer.value
+      }
       let turn = 'X'
       if (this.state.turn === 'X') { turn = '0' }
       const newCount = this.state.count + 1
@@ -146,7 +151,8 @@ class App extends Component {
         boxes: updatedBoxes,
         turn: turn,
         count: newCount,
-        playAgain: false
+        playAgain: false,
+        currentPlayer,
       })
     }
 
@@ -156,6 +162,10 @@ class App extends Component {
       const updatedSecondRow = [...this.state.boxes[1]]
       updatedSecondRow.splice(index, 1, this.state.turn)
       const updatedBoxes = [this.state.boxes[0], updatedSecondRow, this.state.boxes[2]]
+      let currentPlayer = this.state.players.firstPlayer.value
+      if (this.state.currentPlayer === this.state.players.firstPlayer.value) {
+        currentPlayer = this.state.players.secondPlayer.value
+      }
       let turn = 'X'
       if (this.state.turn === 'X') { turn = '0' }
       const newCount = this.state.count + 1
@@ -164,7 +174,8 @@ class App extends Component {
         boxes: updatedBoxes,
         turn,
         count: newCount,
-        playAgain: false
+        playAgain: false,
+        currentPlayer,
       })
     }
   }
@@ -175,6 +186,10 @@ class App extends Component {
       updatedThirdRow.splice(index, 1, this.state.turn)
       const updatedBoxes = [this.state.boxes[0], this.state.boxes[1], updatedThirdRow]
       let turn = 'X'
+      let currentPlayer = this.state.players.firstPlayer.value
+      if (this.state.currentPlayer === this.state.players.firstPlayer.value) {
+        currentPlayer = this.state.players.secondPlayer.value
+      }
       if (this.state.turn === 'X') { turn = '0' }
       const newCount = this.state.count + 1
       if (newCount > 4) { this.checkforWinner(updatedBoxes) }
@@ -182,7 +197,8 @@ class App extends Component {
         boxes: updatedBoxes,
         turn,
         count: newCount,
-        playAgain: false
+        playAgain: false,
+        currentPlayer,
       })
     }
   }
@@ -199,7 +215,8 @@ class App extends Component {
     }
     this.setState({
       players: updatedPlayers,
-      valid: valid
+      valid: valid,
+      currentPlayer: updatedPlayers.firstPlayer.value
     })
   }
   onSubmitHandler = () => {
@@ -214,7 +231,7 @@ class App extends Component {
         clicked={this.refreshState}
         draw={this.state.draw}
         winner={this.state.winner}
-        name={this.state.winner} />
+        name={this.state.currentPlayer} />
     }
     const firstRow = this.state.boxes[0].map((box, index) => { return <Sum symbol={box} clicked={() => this.checkBoxHandler(index, box)} key={index} type={box} /> })
     const secondRow = this.state.boxes[1].map((box, index) => { return <Sum symbol={box} clicked={() => this.checkBoxHandler1(index, box)} key={index} type={box} /> })
@@ -225,11 +242,11 @@ class App extends Component {
     let loginIn = null
     if (this.state.loggedIn) { loginIn = <Redirect to='/' /> }
     let isWinner = null
-    if (this.state.winner||this.state.draw) { isWinner = <Redirect to='/won' /> }
+    if (this.state.winner || this.state.draw) { isWinner = <Redirect to='/won' /> }
     return (<div>
       <Route path='/game' exact render={() => <div>
         <h1 style={{ textAlign: 'center', marginTop: '100px' }}>welcome to my naughts and crosses game!</h1>
-        <h3 style={{ textAlign: 'center' }}>{this.state.turn} to play</h3>
+        <h3 style={{ textAlign: 'center' }}>{this.state.currentPlayer} to play</h3>
         <div style={{ textAlign: 'center' }}>{firstRow}</div>
         <div style={{ textAlign: 'center' }}>{secondRow}</div>
         <div style={{ textAlign: 'center' }}>{thirdRow}</div>
