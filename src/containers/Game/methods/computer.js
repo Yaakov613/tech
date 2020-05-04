@@ -1,3 +1,5 @@
+import checkForWinner from './checkForWinner'
+
 const computer = (react) => {
 
     // creating a copy of the boxes in the original state, inorder to manipulate them.
@@ -136,7 +138,7 @@ const computer = (react) => {
 
     let turn = 'X'
     const newCount = react.state.count + 1
-    if (newCount > 4) { react.checkforWinner(finalUpdatedBoxes) }
+    if (newCount > 4) { checkForWinner(react,finalUpdatedBoxes) }
     react.setState({
         boxes: finalUpdatedBoxes,
         turn: turn,
