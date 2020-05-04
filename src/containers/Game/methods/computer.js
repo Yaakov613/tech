@@ -32,6 +32,7 @@ const computer = (react) => {
     const reducedUpdatedBoxes = updatedBoxes.reduce((total, currentBox) => {
         return total.concat(currentBox)
     })
+    const reducedUpdatedBoxesCopy = [...reducedUpdatedBoxes]
     const verticalArrays = [
         [reducedUpdatedBoxes[0], reducedUpdatedBoxes[3], reducedUpdatedBoxes[6]],
         [reducedUpdatedBoxes[1], reducedUpdatedBoxes[4], reducedUpdatedBoxes[7]],
@@ -91,8 +92,8 @@ const computer = (react) => {
     const isNullInThirdColum = nullInThirdColum.length >= 1
     // const isNullInFourthColum = nullInFourthColum.length === 1
     // const isNullInFithColum = nullInFithColum.length === 1
-
-    // const indexNull = reducedUpdatedBoxes.indexOf(null)
+    const indexNull = reducedUpdatedBoxes.indexOf(null)
+    console.log(indexNull)
 
     // checks and manipulations
 
@@ -107,7 +108,11 @@ const computer = (react) => {
     else if (isTwoInFirstDiagonal && isNullFirstDiagonal) { diagonalArray[0].splice(indexOfFirstDiagonalNull, 1, '0') }
     else if (isTwoInSecondDiagonal && isNullSecondDiagonal) { diagonalArray[1].splice(indexOfSecondDiagonalNull, 1, '0') }
 
-    else { verticalArrays[2].splice(findIndexOfNullVertical3, 1, '0') }
+    else {
+        console.log(reducedUpdatedBoxes)
+        reducedUpdatedBoxes.splice(indexNull, 1, '0')
+        console.log(reducedUpdatedBoxes.join())
+    }
 
     // rearanging the manipulated array, to fit it to the state in correct order
     const verticalArrayCopy = [
@@ -122,13 +127,23 @@ const computer = (react) => {
         [diagonalArray[1][2], reducedUpdatedBoxes[7], diagonalArray[0][2]]
     ]
 
+    const reducedArray = [
+        [reducedUpdatedBoxes[0], reducedUpdatedBoxes[1], reducedUpdatedBoxes[2]],
+        [reducedUpdatedBoxes[3], reducedUpdatedBoxes[4], reducedUpdatedBoxes[5]],
+        [reducedUpdatedBoxes[6], reducedUpdatedBoxes[7], reducedUpdatedBoxes[8]]
+    ]
+
     let finalUpdatedBoxes = updatedBoxes
     if (([...updatedBoxes[0], ...updatedBoxes[1], ...updatedBoxes[2]].join() === [...originalBox[0], ...originalBox[1], ...originalBox[2]].join())
+        && (reducedUpdatedBoxes.join() === reducedUpdatedBoxesCopy.join())
         && [...diagonalArray[0], diagonalArray[1], diagonalArray[2]].join() === [...diagonalCopyArray[0], diagonalCopyArray[1], diagonalCopyArray[2]].join()) {
         finalUpdatedBoxes = verticalArrayCopy
     }
     else if ([...diagonalArray[0], ...diagonalArray[1]].join() !== [...diagonalCopyArray[0], ...diagonalCopyArray[1]].join()) {
         finalUpdatedBoxes = diagonalArrayFinal
+    }
+    else if (reducedUpdatedBoxes.join() !== reducedUpdatedBoxesCopy.join()) {
+        finalUpdatedBoxes = reducedArray
     }
 
     let currentPlayer = react.state.players.firstPlayer.value
@@ -138,7 +153,7 @@ const computer = (react) => {
 
     let turn = 'X'
     const newCount = react.state.count + 1
-    if (newCount > 4) { checkForWinner(react,finalUpdatedBoxes) }
+    if (newCount > 4) { checkForWinner(react, finalUpdatedBoxes) }
     react.setState({
         boxes: finalUpdatedBoxes,
         turn: turn,
