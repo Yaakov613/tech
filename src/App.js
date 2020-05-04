@@ -467,14 +467,17 @@ class App extends Component {
       );
     });
 
-    let loggedIn = null;
-    if (this.state.loggedIn) {
-      loggedIn = <Redirect to="/game" />;
-    }
-    let loginIn = null;
-    if (!this.state.loggedIn) {
-      loginIn = <Redirect to="/" />;
-    }
+    //SEAN - Changed this to ternary operator
+    const loggedIn = <Redirect to={this.state.loggedIn ? "/game" : "/"} />;
+    // let loggedIn = null;
+    // if (this.state.loggedIn) {
+    //   loggedIn = <Redirect to="/game" />;
+    // }
+
+    // let loggedIn = null;
+    // if (!this.state.loggedIn) {
+    //   loggedIn = <Redirect to="/" />;
+    // }
     let isWinner = null;
     if (this.state.winner || this.state.draw) {
       isWinner = <Redirect to="/won" />;
@@ -547,7 +550,6 @@ class App extends Component {
           }}
         />
         {isWinner}
-        {loginIn}
         {loggedIn}
       </div>
     );
