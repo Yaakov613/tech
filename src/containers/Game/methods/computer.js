@@ -105,8 +105,14 @@ const computer = (react) => {
     else if (isTwoInSecondColum && isNullInSecondColum) { verticalArrays[1].splice(findIndexOfNullVertical2, 1, '0') }
     else if (isTwoInThirdColum && isNullInThirdColum) { verticalArrays[2].splice(findIndexOfNullVertical3, 1, '0') }
 
-    else if (isTwoInFirstDiagonal && isNullFirstDiagonal) { diagonalArray[0].splice(indexOfFirstDiagonalNull, 1, '0') }
-    else if (isTwoInSecondDiagonal && isNullSecondDiagonal) { diagonalArray[1].splice(indexOfSecondDiagonalNull, 1, '0') }
+    else if (isTwoInFirstDiagonal && isNullFirstDiagonal) {
+        diagonalArray[0].splice(indexOfFirstDiagonalNull, 1, '0')
+        console.log('fisrt')
+    }
+    else if (isTwoInSecondDiagonal && isNullSecondDiagonal) {
+        diagonalArray[1].splice(indexOfSecondDiagonalNull, 1, '0')
+        console.log('f2nd')
+    }
 
     else {
         console.log(reducedUpdatedBoxes)
@@ -121,11 +127,18 @@ const computer = (react) => {
         [verticalArrays[0][2], verticalArrays[1][2], verticalArrays[2][2]],
     ]
 
-    const diagonalArrayFinal = [
-        [diagonalArray[0][0], reducedUpdatedBoxes[1], diagonalArray[1][0]],
-        [reducedUpdatedBoxes[3], diagonalArray[0][1], reducedUpdatedBoxes[5]],
-        [diagonalArray[1][2], reducedUpdatedBoxes[7], diagonalArray[0][2]]
+    let diagonalArrayFinal = [
+        [diagonalArray[0][0], reducedUpdatedBoxesCopy[1], diagonalArray[1][0]],
+        [reducedUpdatedBoxesCopy[3], diagonalArray[0][1], reducedUpdatedBoxesCopy[5]],
+        [diagonalArray[1][2], reducedUpdatedBoxesCopy[7], diagonalArray[0][2]]
     ]
+    if(diagonalArray[0].join()===diagonalCopyArray[0].join()){
+        diagonalArrayFinal=[
+            [diagonalArray[0][0], reducedUpdatedBoxesCopy[1], diagonalArray[1][0]],
+            [reducedUpdatedBoxesCopy[3], diagonalArray[1][1], reducedUpdatedBoxesCopy[5]],
+            [diagonalArray[1][2], reducedUpdatedBoxesCopy[7], diagonalArray[0][2]]
+        ]
+    }
 
     const reducedArray = [
         [reducedUpdatedBoxes[0], reducedUpdatedBoxes[1], reducedUpdatedBoxes[2]],

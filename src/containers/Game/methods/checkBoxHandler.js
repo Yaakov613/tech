@@ -3,7 +3,7 @@ import checkForWinner from './checkForWinner'
 
 
 const checkBoxHandler = (react, index, box, rowIndex) => {
-  if (react.state.players.secondPlayer.value === 'computer') {
+  if (react.state.players.secondPlayer.value.toLowerCase().trim() === 'computer') {
     if (!box && !react.state.disable && react.state.turn === 'X') {
       const updatedRow = [...react.state.boxes[rowIndex]]
       console.log(rowIndex)
@@ -20,7 +20,7 @@ const checkBoxHandler = (react, index, box, rowIndex) => {
       if (react.state.turn === 'X') { turn = '0' }
       const newCount = react.state.count + 1
       console.log(react.state)
-      if (newCount > 4) {checkForWinner(react,updatedBoxes) }
+      if (newCount > 4) { checkForWinner(react, updatedBoxes) }
       react.setState({
         boxes: updatedBoxes,
         turn: turn,
@@ -30,7 +30,7 @@ const checkBoxHandler = (react, index, box, rowIndex) => {
       })
       setTimeout(() => {
         if (
-          !react.state.winner&&react.state.players.secondPlayer.value === 'computer') {
+          !react.state.draw && !react.state.winner) {
           computer(react)
         }
       }, 500);
@@ -49,7 +49,7 @@ const checkBoxHandler = (react, index, box, rowIndex) => {
     let turn = 'X'
     if (react.state.turn === 'X') { turn = '0' }
     const newCount = react.state.count + 1
-    if (newCount > 4) {checkForWinner(react,updatedBoxes) }
+    if (newCount > 4) { checkForWinner(react, updatedBoxes) }
     react.setState({
       boxes: updatedBoxes,
       turn: turn,
