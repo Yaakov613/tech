@@ -30,7 +30,7 @@ const checkBoxHandler = (react, index, box, rowIndex) => {
       })
       setTimeout(() => {
         if (
-          react.state.players.secondPlayer.value === 'computer') {
+          !react.state.winner&&react.state.players.secondPlayer.value === 'computer') {
           computer(react)
         }
       }, 500);
