@@ -4,6 +4,7 @@ import Winner from './winnerBanner/winner'
 import { Route, Redirect, Link } from 'react-router-dom'
 import Login from './loginPage'
 // import './App.css';
+import computer from './computer/computer'
 
 class App extends Component {
   state = {
@@ -199,9 +200,38 @@ class App extends Component {
   // }
   // else{}
 
-
   checkBoxHandler = (index, box) => {
-    if (!box && !this.state.disable) {
+    if (this.state.players.secondPlayer.value === 'computer') {
+      if (!box && !this.state.disable && this.state.turn === 'X') {
+        const updatedFirstRow = [...this.state.boxes[0]]
+        updatedFirstRow.splice(index, 1, this.state.turn)
+        const updatedBoxes = [updatedFirstRow, this.state.boxes[1], this.state.boxes[2]]
+        let currentPlayer = this.state.players.firstPlayer.value
+        if (this.state.currentPlayer === this.state.players.firstPlayer.value) {
+          currentPlayer = this.state.players.secondPlayer.value
+        }
+        let turn = 'X'
+        if (this.state.turn === 'X') { turn = '0' }
+        const newCount = this.state.count + 1
+        if (newCount > 4) { this.checkforWinner(updatedBoxes) }
+        this.setState({
+          boxes: updatedBoxes,
+          turn: turn,
+          count: newCount,
+          playAgain: false,
+          currentPlayer,
+        })
+        setTimeout(() => {
+          if (
+            this.state.players.secondPlayer.value === 'computer') {
+            computer(this)
+          }
+
+          console.log('computer')
+        }, 500);
+      }
+    }
+    else if (!box && !this.state.disable) {
       const updatedFirstRow = [...this.state.boxes[0]]
       updatedFirstRow.splice(index, 1, this.state.turn)
       const updatedBoxes = [updatedFirstRow, this.state.boxes[1], this.state.boxes[2]]
@@ -221,10 +251,37 @@ class App extends Component {
         currentPlayer,
       })
     }
-
   }
   checkBoxHandler1 = (index, box) => {
-    if (!box && !this.state.disable) {
+    if (this.state.players.secondPlayer.value === 'computer') {
+      if (!box && !this.state.disable && this.state.turn === 'X') {
+        const updatedSecondRow = [...this.state.boxes[1]]
+        updatedSecondRow.splice(index, 1, this.state.turn)
+        const updatedBoxes = [this.state.boxes[0], updatedSecondRow, this.state.boxes[2]]
+        let currentPlayer = this.state.players.firstPlayer.value
+        if (this.state.currentPlayer === this.state.players.firstPlayer.value) {
+          currentPlayer = this.state.players.secondPlayer.value
+        }
+        let turn = 'X'
+        if (this.state.turn === 'X') { turn = '0' }
+        const newCount = this.state.count + 1
+        if (newCount > 4) { this.checkforWinner(updatedBoxes) }
+        this.setState({
+          boxes: updatedBoxes,
+          turn,
+          count: newCount,
+          playAgain: false,
+          currentPlayer,
+        })
+        setTimeout(() => {
+          if (
+            this.state.players.secondPlayer.value === 'computer') {
+            computer(this)
+          }
+        }, 500);
+      }
+    }
+    else if (!box && !this.state.disable) {
       const updatedSecondRow = [...this.state.boxes[1]]
       updatedSecondRow.splice(index, 1, this.state.turn)
       const updatedBoxes = [this.state.boxes[0], updatedSecondRow, this.state.boxes[2]]
@@ -243,11 +300,39 @@ class App extends Component {
         playAgain: false,
         currentPlayer,
       })
+
     }
+
+
   }
 
   checkBoxHandler2 = (index, box) => {
-    if (!box && !this.state.disable) {
+    if (this.state.players.secondPlayer.value === 'computer') {
+      if (!box && !this.state.disable && this.state.turn === 'X') {
+        const updatedThirdRow = [...this.state.boxes[2]]
+        updatedThirdRow.splice(index, 1, this.state.turn)
+        const updatedBoxes = [this.state.boxes[0], this.state.boxes[1], updatedThirdRow]
+        let turn = 'X'
+        let currentPlayer = this.state.players.firstPlayer.value
+        if (this.state.currentPlayer === this.state.players.firstPlayer.value) {
+          currentPlayer = this.state.players.secondPlayer.value
+        }
+        if (this.state.turn === 'X') { turn = '0' }
+        const newCount = this.state.count + 1
+        if (newCount > 4) { this.checkforWinner(updatedBoxes) }
+        this.setState({
+          boxes: updatedBoxes,
+          turn,
+          count: newCount,
+          playAgain: false,
+          currentPlayer,
+        })
+        setTimeout(() => {
+          computer(this)
+        }, 500);
+
+      }
+    } else if (!box && !this.state.disable) {
       const updatedThirdRow = [...this.state.boxes[2]]
       updatedThirdRow.splice(index, 1, this.state.turn)
       const updatedBoxes = [this.state.boxes[0], this.state.boxes[1], updatedThirdRow]
@@ -266,7 +351,10 @@ class App extends Component {
         playAgain: false,
         currentPlayer,
       })
+
     }
+
+
   }
   inputChangedHandler = (event, player) => {
     const updatedPlayers = {

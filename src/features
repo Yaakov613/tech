@@ -1,6 +1,6 @@
 1) add a play again button //done
-2) keep track of the number of wins
-3) add names to the game // made a login form. just have to save the names 2, and display the turns
+2) keep track of the number of wins//done
+3) add names to the game // made a login form. done
 4) send scores to the database
 5) login user and fetch scores
 6) route to a top score page
