@@ -1,7 +1,7 @@
 import React from 'react'
 import classes from './box.module.css'
 
-const sum = (props) => {
+const box = (props) => {
     let style=null
     if(props.symbol==='X'){
         style=classes.TextX
@@ -17,4 +17,4 @@ const sum = (props) => {
     )
 }
 
-export default sum
+export default box
