@@ -1,9 +1,8 @@
 import React, { Component } from "react";
 import Sum from "./UI/board/box";
-import Winner from "./winnerBanner/winner";
+import Winner from "./WinnerBanner/winner";
 import { Route, Redirect, Link } from "react-router-dom";
-import Login from "./loginPage";
-// import './App.css';
+import Login from "./components/Login/loginPage";
 import computer from "./computer/computer";
 
 class App extends Component {
@@ -467,7 +466,7 @@ class App extends Component {
       );
     });
 
-    //SEAN - Changed this to ternary operator
+    //SEAN - Changed this to ternary operator, knocks out a good few lines of code
     const loggedIn = <Redirect to={this.state.loggedIn ? "/game" : "/"} />;
     // let loggedIn = null;
     // if (this.state.loggedIn) {
@@ -478,10 +477,18 @@ class App extends Component {
     // if (!this.state.loggedIn) {
     //   loggedIn = <Redirect to="/" />;
     // }
-    let isWinner = null;
-    if (this.state.winner || this.state.draw) {
-      isWinner = <Redirect to="/won" />;
-    }
+
+    //SEAN - Andrew Mead's course on react taught me a cool thing that the && operator will render the jsx if the first element is true,
+    //so the below is exactly the same as: winner ? <Redirect> : false;
+    const isWinner = (this.state.winner || this.state.draw) && (
+      <Redirect to="/won" />
+    );
+
+    // if (this.state.winner || this.state.draw) {
+    //   isWinner = <Redirect to="/won" />;
+    // }
+
+    //SEAN - Like I said, work through the html and css course. We both need it! That course will clarify much of how to understand containers I believe
     return (
       <div>
         <Route
@@ -489,6 +496,7 @@ class App extends Component {
           exact
           render={() => (
             <div>
+              {/* SEAN- Split this into a separate component! Remember how Max did it with a folder for components and a folder for containers? */}
               <Link to="/">
                 <button
                   style={{
@@ -529,6 +537,7 @@ class App extends Component {
         <Route
           path="/won"
           render={() => {
+            //You can use short-hand arrow function for this: () => winner;
             return winner;
           }}
         />

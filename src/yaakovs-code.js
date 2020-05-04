@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import Sum from "./UI/board/box";
-import Winner from "./winnerBanner/winner";
+import Winner from "./WinnerBanner/winner";
 import { Route, Redirect, Link } from "react-router-dom";
-import Login from "./loginPage";
+import Login from "./components/Login/loginPage";
 // import './App.css';
 import computer from "./computer/computer";
 
