@@ -92,8 +92,17 @@ const computer = (react) => {
     const isNullInThirdColum = nullInThirdColum.length >= 1
     // const isNullInFourthColum = nullInFourthColum.length === 1
     // const isNullInFithColum = nullInFithColum.length === 1
-    const indexNull = reducedUpdatedBoxes.indexOf(null)
+    let indexNull = reducedUpdatedBoxes.indexOf(null)
     console.log(indexNull)
+    if(reducedUpdatedBoxes[4]===null){
+        indexNull=4
+    }
+    else if(reducedUpdatedBoxes[4]==='0'&&reducedUpdatedBoxes[1]===null){
+        indexNull=1
+    }
+    else if(reducedUpdatedBoxes[4]==='0'&&reducedUpdatedBoxes[3]===null){
+        indexNull=3
+    }
 
     // checks and manipulations
 

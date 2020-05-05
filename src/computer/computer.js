@@ -1,4 +1,4 @@
-const computer = (react) => {
+// const computer = (react) => {
 
     // creating a copy of the boxes in the original state, inorder to manipulate them.
 
