@@ -16,7 +16,8 @@ const refreshState = (react) => {
       loggedIn: true,
       valid: true,
       playAgain: true,
-      currentPlayer: react.state.players.firstPlayer.value
+      currentPlayer: react.state.players.firstPlayer.value,
     })
   }
+
   export default refreshState

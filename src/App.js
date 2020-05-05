@@ -35,19 +35,24 @@ class App extends Component {
     loggedIn: false,
     valid: false,
     playAgain: false,
-    currentPlayer: null
+    currentPlayer: null,
+    multiPlayer: false
   }
 
-  inputChangedHandler = (event, player) => {
+  inputChangedHandler = (value, player) => {
+
     const updatedPlayers = {
       ...this.state.players,
       [player]: {
-        value: event.target.value,
+        value: value,
         wins: this.state.players[player].wins
       }
     }
     let valid = null
-    if (updatedPlayers.firstPlayer.value.length && updatedPlayers.secondPlayer.value.length) {
+    if (this.state.multiPlayer && updatedPlayers.firstPlayer.value.length && updatedPlayers.secondPlayer.value.length) {
+      valid = true
+    }
+    else if (!this.state.multiPlayer && updatedPlayers.firstPlayer.value.length) {
       valid = true
     }
     this.setState({
@@ -57,7 +62,25 @@ class App extends Component {
     })
   }
   onSubmitHandler = () => {
-    this.setState({ loggedIn: true })
+    let secondPlayer = this.state.players.secondPlayer.value
+    if (!this.state.multiPlayer) {
+      secondPlayer = 'computer'
+    }
+    let players = {
+      firstPlayer: { ...this.state.players.firstPlayer },
+      secondPlayer: {
+        ...this.state.players.secondPlayer,
+        value: secondPlayer
+      }
+
+    }
+    console.log(players)
+    console.log(this.state.players)
+
+    this.setState({
+      loggedIn: true,
+      players: players
+    })
   }
 
 
@@ -70,15 +93,16 @@ class App extends Component {
     let winner = null
     if (this.state.winner || this.state.draw) {
       winner = <Winner
-        clicked={()=>refreshState(this)}
+        clicked={() => refreshState(this)}
         draw={this.state.draw}
         winner={this.state.winner}
         name={currentPlayer} />
     }
-   
+    let secondPlayer = null
+    this.state.multiPlayer ? secondPlayer = this.state.players.secondPlayer.value : secondPlayer = 'computer'
     const game = (<Board
       firstPlayer={this.state.players.firstPlayer.value}
-      secondPlayer={this.state.players.secondPlayer.value}
+      secondPlayer={secondPlayer}
       currentPlayer={this.state.currentPlayer}
       firstPlayerWins={this.state.players.firstPlayer.wins}
       secondPlayerWins={this.state.players.secondPlayer.wins}>
@@ -86,7 +110,7 @@ class App extends Component {
         (rowOfBoxes, rowIndex) => <Row>
           {rowOfBoxes.map(
             (box, index) => <Box symbol={box}
-            turn={this.state.turn}
+              turn={this.state.turn}
               clicked={() => checkBoxHandler(this, index, box, rowIndex)}
               key={index}
               type={box} />)}
@@ -101,12 +125,12 @@ class App extends Component {
     let isWinner = null
     if (this.state.winner || this.state.draw) { isWinner = <Redirect to='/won' /> }
     return (<div>
-      <Route path='/game' exact render={() => <div style={{textAlign:'center'}}>
-        <Link to='/'><Button 
-         clicked={()=>resetState(this)}
-           name={'Logout'}
-         />
-         </Link>
+      <Route path='/game' exact render={() => <div style={{ textAlign: 'center' }}>
+        <Link to='/'><Button
+          clicked={() => resetState(this)}
+          name={'Logout'}
+        />
+        </Link>
         {game}
       </div>
 
@@ -118,6 +142,9 @@ class App extends Component {
       }} />
       <Route path='/' exact render={() => {
         return <Login
+          // computer={this.setState({})}
+          multiPlayer={this.state.multiPlayer}
+          clicked={() => { this.setState({ multiPlayer: !this.state.multiPlayer }) }}
           disable={!this.state.valid}
           submited={this.onSubmitHandler}
           value1={this.state.players.firstPlayer.value}

@@ -3,7 +3,7 @@ import checkForWinner from './checkForWinner'
 
 
 const checkBoxHandler = (react, index, box, rowIndex) => {
-  if (react.state.players.secondPlayer.value.toLowerCase().trim() === 'computer') {
+  if (!react.state.multiPlayer) {
     if (!box && !react.state.disable && react.state.turn === 'X') {
       const updatedRow = [...react.state.boxes[rowIndex]]
       console.log(rowIndex)
