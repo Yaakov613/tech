@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import Winner from './winnerBanner/winner'
+import Winner from './components/UI/winner/winner'
 import { Route, Redirect, Link } from 'react-router-dom'
-import Login from './loginPage'
+import Login from './components/UI/login/loginPage'
 import Board from './components/UI/board/board';
 import Row from './components/UI/row/row'
 import Box from './components/UI/box/box'
@@ -86,6 +86,7 @@ class App extends Component {
         (rowOfBoxes, rowIndex) => <Row>
           {rowOfBoxes.map(
             (box, index) => <Box symbol={box}
+            turn={this.state.turn}
               clicked={() => checkBoxHandler(this, index, box, rowIndex)}
               key={index}
               type={box} />)}

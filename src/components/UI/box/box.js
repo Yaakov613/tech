@@ -12,6 +12,7 @@ const box = (props) => {
     return (
         <div onClick={props.clicked}
             className={classes.TestBox}>
+            {/* <p className={classes.AboutToClick}>{props.turn}</p> */}
             <p className={style}>{props.type}</p>
         </div>
     )
